@@ -46,17 +46,12 @@ app.use(express.static("public"));
 // app.set("view engine", "handlebars");
 
 //  Mongo DB connection ------------------------ 
-// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
-// mongoose.Promise = Promise;
-// mongoose.connect(MONGODB_URI);
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI);
 // --------------------------------------------
-mongoose.connect("mongodb://localhost/mongoHeadlines");
-
-// // MAIN route  -- default "/"
-// app.get("/", function(req, res) {
-//    res.render('index'); 
-// });
+// mongoose.connect("mongodb://localhost/mongoHeadlines");
 
 
 // SCRAPE route
@@ -80,6 +75,7 @@ app.get("/scrape", function(req,res){
             console.log(results.link + "\n" + results.title + "\n" +results.summary);
             // Create new Article from model using results
             if (results.title && results.link && results.summary){
+                
                 db.Article.create(results) 
                 .then(function(dbArticle){
                     console.log(dbArticle);
@@ -98,14 +94,13 @@ app.get("/scrape", function(req,res){
 });
 
 //  ALL ARTICLE LIST route
-app.get("/articles", function(req, res) {
+app.get("/articles", function(res, req) {
     console.log("route for articles");
     // Grab every document in the Articles collection
     db.Article.find({})
       .then(function(dbArticle) {
         // If we were able to successfully find Articles, send them back to the client
         console.log(dbArticle.length);
-        console.log(dbArticle[2]);
         res.json(dbArticle);
       })
       .catch(function(err) {
@@ -115,7 +110,7 @@ app.get("/articles", function(req, res) {
   });
 
 // // SPECIFIC ARTICLE LIST route
-// app.get("/articles/:id", function(res,req){
+// app.get("/articles/:id", function(req,res){
 //     // Find requested article in Articles collection
 //     db.Article.findOne({_id: req.params.id })
 //       .populate("note")
@@ -130,7 +125,7 @@ app.get("/articles", function(req, res) {
 // });
 
 // // Update Article's associated Note route
-// app.post("/articles/:id"),function(res, req){
+// app.post("/articles/:id"),function(req, res){
 //     db.Note.create(req.body)
 //     .then(function(dbNote){
 //         // update Article 
