@@ -10,11 +10,13 @@ var handlebars = require("express-handlebars");
 var mongoose = require("mongoose");
 // form submission
 var bodyParser = require("body-parser");
+// log requests
+var logger = require("morgan");
+
 // scraping tools
 var cheerio = require("cheerio");
 var axios = require("axios");
-// log requests
-var logger = require("morgan");
+
 //--------------------------------------------
 
 // Mongoose Models
@@ -22,8 +24,8 @@ var db = require("./models")
 
 
 // Define Port
-var PORT =  process.env.PORT || 3000;
-    
+//var PORT =  process.env.PORT || 3000;
+ var PORT = 3000;   
 // Initialize Express
 var app = express();
 
@@ -37,26 +39,25 @@ app.use(bodyParser.urlencoded({extended: true}));
 // Set up the public folder for static files
 app.use(express.static("public"));
 
-// Set Handlebars.
-var exphbs = require("express-handlebars");
-//app.set('views', path.join(__dirname, 'views'));
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+// // Set Handlebars.
+// var exphbs = require("express-handlebars");
+// //app.set('views', path.join(__dirname, 'views'));
+// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+// app.set("view engine", "handlebars");
 
 //  Mongo DB connection ------------------------ 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
-mongoose.Promise = Promise;
-mongoose.connect(MONGODB_URI);
+// mongoose.Promise = Promise;
+// mongoose.connect(MONGODB_URI);
 // --------------------------------------------
+mongoose.connect("mongodb://localhost/mongoHeadlines");
 
+// // MAIN route  -- default "/"
+// app.get("/", function(req, res) {
+//    res.render('index'); 
+// });
 
-
-
-// MAIN route  -- default "/"
-app.get("/", function(req, res) {
-   res.render('index'); 
-});
 
 // SCRAPE route
 app.get("/scrape", function(req,res){
@@ -97,52 +98,56 @@ app.get("/scrape", function(req,res){
 });
 
 //  ALL ARTICLE LIST route
-app.get("/articles", function(res, req){
-    // Find all articles in Articles collection
+app.get("/articles", function(req, res) {
+    console.log("route for articles");
+    // Grab every document in the Articles collection
     db.Article.find({})
-    .then(function(dbArticle){
+      .then(function(dbArticle) {
+        // If we were able to successfully find Articles, send them back to the client
+        console.log(dbArticle.length);
+        console.log(dbArticle[2]);
         res.json(dbArticle);
-    })
-    .catch(function(err){
-        // Or send error 
-        res.json(err);
-    });
-});
-
-// SPECIFIC ARTICLE LIST route
-app.get("/articles/:id", function(res,req){
-    // Find requested article in Articles collection
-    db.Article.findOne({_id: req.params.id })
-      .populate("note")
-      // and add note to result if one exists
-      .then(function(dbArticle){
-          res.json(dbArticle);
       })
-      .catch(function(err){
-        // Or send error 
+      .catch(function(err) {
+        // If an error occurred, send it to the client
         res.json(err);
-    });
-});
+      });
+  });
 
-// Update Article's associated Note route
-app.post("/articles/:id"),function(res, req){
-    db.Note.create(req.body)
-    .then(function(dbNote){
-        // update Article 
-       return db.Article.findOneAndUpdate(
-           {_id: req.params.id }, 
-           {note: dbNote_id }, 
-           { new: true});
-    })
-    .then(function(dbArticle){
-        // Send article to client
-        res.json(dbArticle);
-    })
-    .catch(function(err){
-        // Or send error 
-        res.json(err);
-    });
-}
+// // SPECIFIC ARTICLE LIST route
+// app.get("/articles/:id", function(res,req){
+//     // Find requested article in Articles collection
+//     db.Article.findOne({_id: req.params.id })
+//       .populate("note")
+//       // and add note to result if one exists
+//       .then(function(dbArticle){
+//           res.json(dbArticle);
+//       })
+//       .catch(function(err){
+//         // Or send error 
+//         res.json(err);
+//     });
+// });
+
+// // Update Article's associated Note route
+// app.post("/articles/:id"),function(res, req){
+//     db.Note.create(req.body)
+//     .then(function(dbNote){
+//         // update Article 
+//        return db.Article.findOneAndUpdate(
+//            {_id: req.params.id }, 
+//            {note: dbNote_id }, 
+//            { new: true});
+//     })
+//     .then(function(dbArticle){
+//         // Send article to client
+//         res.json(dbArticle);
+//     })
+//     .catch(function(err){
+//         // Or send error 
+//         res.json(err);
+//     });
+// }
 
 
 // Activate Server : Begin listening
