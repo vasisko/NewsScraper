@@ -57,6 +57,9 @@ app.get('/', function (req, res){
     res.render('index');
 })
 
+app.get('/saved', function (req, res){
+    res.render('savedArticles');
+})
 
 // SCRAPE route
 app.get("/scrape", function(req,res){
@@ -94,7 +97,8 @@ app.get("/scrape", function(req,res){
         });
 
         // Log the results once you've looped through each of the elements found with cheerio
-        res.send("Scrape Complete");//****change msg***/
+        //****res.send("Scrape Complete");change msg***/
+        res.render("/");
         });
     //--------------------------------------
 });
