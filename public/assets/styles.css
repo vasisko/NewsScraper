@@ -1,16 +1,41 @@
 
-      body { background-color: rgb(226, 235, 106) }
+      body { 
+        background-color: white;
+      }
+
+      .jumbotron {
+          height: 150px;
+          margin-top:0px;
+          padding-top: 20px;
+          background-color: white;
+          background-image: url("https://thumbs.dreamstime.com/z/wall-street-journal-newspaper-montreal-canada-march-samsung-s-american-international-67689182.jpg");
+      }
+      header { 
+        color: black;
+        /*font-family: 'Maiden Orange', cursive;*/
+        font-family: 'Anton', sans-serif;
+        text-shadow: white 1px 2px;
+        text-align: center;
+    }
       #wrapper {
-        width: 960px;
+        width: 80%;
         margin-left: auto;
         margin-right: auto;
         padding-top: 5%;
+        
       }
+      #
       #articles {
         display: inline-block;
         overflow: auto;
         width: 60%;
-        height: 700px;
+        height: 700px; 
+      }
+      #articles a{ color: black;}
+      #articles p { 
+        background-color: lightblue;
+        padding: 5px;
+        border: 1px solid black;
       }
       #notes {
         float: right;

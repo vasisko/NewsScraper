@@ -62,22 +62,20 @@ app.get('/', function (req, res){
 app.get("/scrape", function(req,res){
 
     // Scrape for news------------------------------
-    axios.get("https://www.wsj.com/news/types/technology", ).then(function(response) {
+    axios.get("http://www.smashingmagazine.com/articles").then(function(response) {
     
         // Load the HTML into cheerio 
         var $ = cheerio.load(response.data);
 
         // Scrape for latest posted articles
-        $("div.item-container").each(function(i, element) {
+        $("article.article--post").each(function(i, element) {
             // Array for scraped data 
             var results = {};
 
-            results.link = $(this).children("div").children("h3").children("a").attr("href");
-            results.title = $(this).children("div").children("h3").text();
-            results.image = $(this).children("a").children("img").attr("src");
-            results.summary = $(this).children("div").children("div").children("p").text();
-            results.pubDate = $(this).children("div").children("time").children("div").text();
-            
+            results.link = "https://www.smashingmagazine.com" + $(this).children("h1").children("a").attr("href");
+            results.title = $(this).children("h1").text();
+            results.summary = $(this).children("div").children("p").text();
+
             console.log(results.link + "\n" + results.title + "\n" +results.summary);
             // Create new Article from model using results
             if (results.title && results.link && results.summary){
