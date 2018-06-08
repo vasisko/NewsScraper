@@ -45,12 +45,17 @@ var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-//  Mongo DB connection ------------------------ 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+// //  Mongo DB connection ------------------------ 
+// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
-mongoose.Promise = Promise;
-mongoose.connect(MONGODB_URI);
-// --------------------------------------------
+// mongoose.Promise = Promise;
+// mongoose.connect(MONGODB_URI);
+// //
+//connect to mongodb
+let mongoConnect = process.env.MONGODB_URI ||"mongodb://localhost/mongoHeadlines"
+mongoose.connect(mongoConnect);
+mongoose.Promise = global.Promise;
+//--------------------------------------------
 // mongoose.connect("mongodb://localhost/mongoHeadlines");
 
 app.get('/', function (req, res){
