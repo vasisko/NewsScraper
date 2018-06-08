@@ -109,7 +109,7 @@ app.get("/articles", function(req, res) {
     db.Article.find({})
       .then(function(dbArticle) {
         // If we were able to successfully find Articles, send them back to the client
-        console.log(dbArticle.length);
+        console.log("Number of articles: " + dbArticle.length);
         res.json(dbArticle);
       })
       .catch(function(err) {
@@ -119,7 +119,8 @@ app.get("/articles", function(req, res) {
   });
 
 // SPECIFIC ARTICLE LIST route
-app.get("/articles/:id", function(req,res){
+app.get("/articles/:id", function(req, res){
+    console.log("Article ID: " + req.params.id);
     // Find requested article in Articles collection
     db.Article.findOne({_id: req.params.id })
       .populate("note")
@@ -129,7 +130,7 @@ app.get("/articles/:id", function(req,res){
       })
       .catch(function(err){
         // Or send error 
-        res.json(err);
+        console.log(err);
     });
 });
 
@@ -139,8 +140,8 @@ app.post("/articles/:id"),function(req, res){
     .then(function(dbNote){
         // update Article 
        return db.Article.findOneAndUpdate(
-           {_id: req.params.id }, 
-           {note: dbNote_id }, 
+           { _id: req.params.id }, 
+           { note: dbNote_id }, 
            { new: true});
     })
     .then(function(dbArticle){
