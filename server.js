@@ -79,9 +79,9 @@ app.get("/scrape", function(req,res){
             results.title = $(this).children("div").children("h3").text();
             results.image = $(this).children("a").children("img").attr("src");
             results.summary = $(this).children("div").children("div").children("p").text();
-            results.pubDate = $(this).children("div").children("time").children("div").text();
+            //results.pubDate = $(this).children("div").children("time").children("div").text();
             
-            console.log(results.link + "\n" + results.title + "\n" +results.summary);
+            //console.log(results.link + "\n" + results.title + "\n" +results.summary);
             // Create new Article from model using results
             if (results.title && results.link && results.summary){
                 
@@ -90,15 +90,14 @@ app.get("/scrape", function(req,res){
                     console.log(dbArticle);
                 })
                 .catch(function(err){
-                    return res.json(err);
+                    console.log(err);
                 });
             }
 
         });
 
         // Log the results once you've looped through each of the elements found with cheerio
-        //****res.send("Scrape Complete");change msg***/
-        res.render("/");
+        res.send("scraped!");
         });
     //--------------------------------------
 });

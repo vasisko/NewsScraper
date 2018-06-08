@@ -85,7 +85,7 @@ app.get("/scrape", function(req,res){
                     console.log(dbArticle);
                 })
                 .catch(function(err){
-                    return res.json(err);
+                    return console.log(err);
                 });
             }
 

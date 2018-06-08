@@ -14,7 +14,6 @@ var ArticleSchema = new Schema({
   link: {
     type: String,
     required: true,
-    unique: true
   },
   summary: {
     type: String,
@@ -23,11 +22,7 @@ var ArticleSchema = new Schema({
   image: {
     type: String,
   },
-  pubDate: {
-    type: String,
-    required: true
-  },
-
+  
 
   // `note` is an object that stores a Note id
   // The ref property links the ObjectId to the Note model
