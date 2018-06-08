@@ -24,8 +24,8 @@ var db = require("./models")
 
 
 // Define Port
-//var PORT =  process.env.PORT || 3000;
- var PORT = 3000;   
+var PORT =  process.env.PORT || 3000;
+// var PORT = 3000;   
 // Initialize Express
 var app = express();
 
@@ -46,15 +46,16 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 // //  Mongo DB connection ------------------------ 
-// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
-// mongoose.Promise = Promise;
-// mongoose.connect(MONGODB_URI);
-// //
-//connect to mongodb
-let mongoConnect = process.env.MONGODB_URI ||"mongodb://localhost/mongoHeadlines"
-mongoose.connect(mongoConnect);
-mongoose.Promise = global.Promise;
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI);
+//
+
+// //connect to mongodb
+// let mongoConnect = process.env.MONGODB_URI ||"mongodb://localhost/userArticles"
+// mongoose.connect(mongoConnect);
+// mongoose.Promise = global.Promise;
 //--------------------------------------------
 // mongoose.connect("mongodb://localhost/mongoHeadlines");
 
